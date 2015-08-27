@@ -1,0 +1,15 @@
+= form_for debt do |f|
+  table.table.table-bordered
+    tr
+      th Creditor
+      td #{debt.creditor.name}
+    tr
+      th Debtor
+      td #{debt.debtor.name}
+    tr
+      th Amount
+      td
+        = f.text_field :amount, class: 'amount_text_field'
+
+  = link_to 'Paid', debt, method: :delete, data: {confirm: 'Are you sure?'}, class: ['btn', 'btn-success']
+  = f.submit class: ['btn', 'btn-default']

@@ -1,0 +1,7 @@
+tr
+  td #{payment.id}
+  td #{payment.date || payment.created_at.to_date}
+  td #{payment.name}
+  td #{payment.amount}
+  td #{payment.creditor.name}
+  td #{actual_debtors(payment).join(', ')}

@@ -1,0 +1,32 @@
+h1 Trippledex Payment Management System
+
+table.table.table-bordered.table-hover
+  tr
+    th Me / Owe
+    - @people.each do |person|
+      th #{person.name}
+
+  - @people.each do |person|
+    tr
+      th #{person.name}
+      - @people.each do |other|
+        td
+          - if person == other
+            | -
+          - else
+            = link_to format('%.2f', person.owes(other)), [:edit, Debt.of(other, person, true)]
+
+= link_to 'New Payment', new_payment_path, class: ['btn', 'btn-default']
+= link_to 'New Person', new_person_path, class: ['btn', 'btn-default']
+
+table.table.table-bordered.table-hover.table-striped
+  tr
+    th ID
+    th Date
+    th What
+    th Total Amount
+    th Creditor
+    th Debtor(s)
+
+  - @payments.reverse_each do |payment|
+    = render payment
