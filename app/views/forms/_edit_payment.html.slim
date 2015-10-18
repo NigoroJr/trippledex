@@ -1,0 +1,6 @@
+= simple_form_for @payment do |f|
+  = f.input :creditor, collection: Person.all, selected: @payment.creditor.id
+  = f.input :debtors, collection: Person.all, as: :check_boxes, value_method: :id, include_hidden: false, checked: @payment.debtors.map(&:id)
+  = f.input :amount, label: 'Total Amount Creditor Paid'
+  = f.input :name
+  = f.button :submit, class: ['btn', 'btn-success']

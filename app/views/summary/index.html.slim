@@ -27,6 +27,8 @@ table.table.table-bordered.table-hover.table-striped
     th Total Amount
     th Creditor
     th Debtor(s)
+    th Edit
+    th Delete
 
   - @payments.reverse_each do |payment|
     = render payment

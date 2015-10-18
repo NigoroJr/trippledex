@@ -31,16 +31,19 @@ class PaymentsController < ApplicationController
 
   def update
     @payment = Payment.find(params[:id])
+    Debt.undo(@payment)
     @payment.update(payment_params)
+    Debt.update_from_payment(@payment)
 
     redirect_to controller: 'summary', action: 'index'
   end
 
   def destroy
     @payment = Payment.find(params[:id])
-    @payment.delete
+    Debt.undo(@payment)
+    @payment.destroy
 
-    redirect_to action: 'index'
+    redirect_to controller: 'summary', action: 'index'
   end
 
   private

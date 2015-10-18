@@ -30,28 +30,19 @@ class Debt < ActiveRecord::Base
       # Change nothing if creditor paid for him/herself
       next if creditor == debtor
 
+      creditor.paid_on_behalf_of!(debtor, amount_per_person)
+
       amount_left = amount_per_person
+    end
+  end
 
-      # First check if `creditor' owes `debtor' some money already
-      debt = Debt.of(debtor, creditor)
-      if !debt.nil? && debt.amount != 0
-        # Owes more than this payment
-        if debt.amount > amount_left
-          debt.amount -= amount_left
-          debt.save
-          amount_left = 0
-        else
-          # Decrease the amount that the `creditor' owes `debtor'
-          amount_left -= debt.amount
-          debt.amount = 0
-          debt.save
-        end
-      end
+  def self.undo(payment)
+    creditor = payment.creditor
+    debtors = payment.debtors
+    refund_per_person = payment.amount / debtors.size
 
-      debt = Debt.of(creditor, debtor) \
-             || Debt.new({creditor_id: creditor.id, debtor_id: debtor.id})
-      debt.amount += amount_left
-      debt.save
+    debtors.each do |debtor|
+      creditor.pay_back!(debtor, refund_per_person)
     end
   end
 end

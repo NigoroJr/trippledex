@@ -5,3 +5,7 @@ tr
   td #{payment.amount}
   td #{payment.creditor.name}
   td #{actual_debtors(payment).join(', ')}
+  td.no-pad
+    = link_to 'Edit', edit_payment_path(payment), class: ['btn', 'btn-default']
+  td.no-pad
+    = link_to 'Delete', payment, method: :delete, data: {confirm: 'Are you sure you want to delete?'}, class: ['btn', 'btn-danger']
